@@ -27,7 +27,6 @@
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
 			<version>1.13-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -77,6 +76,19 @@
 								<descriptor>src/main/resources/maven-assembly-plugin-descriptor.xml</descriptor>
 							</descriptors>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>src</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
