@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.bukkit.Axis;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
 public class WorldManager {
@@ -714,5 +716,79 @@ public class WorldManager {
 		for (World world : worlds)
 			players.addAll(world.getPlayers());
 		return players.stream();
+	}
+
+	/**
+	 * Get the distance between two location by comparing only one coordinate.
+	 * 
+	 * @param from The location used as reference.
+	 * @param to   The movable location.
+	 * @param axis The axis used to compare the associated coordinate.
+	 * @return The distance.
+	 */
+	public static double getDistance1D(Location from, Location to, Axis axis) {
+		checkLocation(from, to);
+		switch (axis) {
+		case X:
+			return from.getX() - to.getX();
+		case Y:
+			return from.getY() - to.getY();
+		default:
+			return from.getZ() - to.getZ();
+		}
+	}
+
+	/**
+	 * Get the distance between this location and another. The value of this method is not cached and uses a costly square-root
+	 * function, so do not repeatedly call this method to get the location's magnitude. NaN will be returned if the inner result of
+	 * the sqrt() function overflows, which will be caused if the distance is too long.
+	 *
+	 * @param from The location used as reference.
+	 * @param to   The movable location.
+	 * @throws IllegalArgumentException for differing worlds
+	 * 
+	 * @see #getScaredDistance2D(Location, Location)
+	 */
+	public static double getDistance2D(Location from, Location to) {
+		return Math.sqrt(getScaredDistance2D(from, to));
+	}
+
+	/**
+	 * Get the squared distance between this location and another by comparing only their x and z coordinates.
+	 *
+	 * @param from The location used as reference.
+	 * @param to   The movable location.
+	 * @return the distance.
+	 * 
+	 * @throws IllegalArgumentException for differing worlds
+	 * 
+	 * @see Vector
+	 */
+	public static double getScaredDistance2D(Location from, Location to) {
+		checkLocation(from, to);
+		return NumberConversions.square(from.getX() - to.getX()) + NumberConversions.square(from.getZ() - to.getZ());
+	}
+
+	/**
+	 * Returns whether the location vector is in an axis-aligned bounding surface X and Z.
+	 * 
+	 * @param location The location to check.
+	 * @param from     The minimum location.
+	 * @param to       The maximum location.
+	 * 
+	 * @return True if the location is in the AABB.
+	 */
+	public static boolean isInAABB2D(Location location, Location from, Location to) {
+		return from.getX() <= location.getX() && location.getX() <= to.getX() && from.getZ() <= location.getZ() && location.getZ() <= to.getZ();
+	}
+
+	private static void checkLocation(Location from, Location to) {
+		if (from == null || to == null) {
+			throw new IllegalArgumentException("Cannot measure distance to a null location");
+		} else if (from.getWorld() == null || to.getWorld() == null) {
+			throw new IllegalArgumentException("Cannot measure distance to a null world");
+		} else if (from.getWorld() != to.getWorld()) {
+			throw new IllegalArgumentException("Cannot measure distance between " + from.getWorld().getName() + " and " + to.getWorld().getName());
+		}
 	}
 }
