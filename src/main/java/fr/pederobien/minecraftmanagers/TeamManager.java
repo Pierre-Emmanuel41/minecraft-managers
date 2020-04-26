@@ -11,16 +11,118 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class TeamManager {
 	private static final Random RANDOM = new Random();
 
 	/**
+	 * Create a team on the server.
+	 * 
+	 * @param teamName The name of the team.
+	 */
+	public static Team createTeam(String teamName) {
+		return getMainScoreboard().registerNewTeam(teamName);
+
+	}
+
+	/**
+	 * Create a team on the server and set its color.
+	 * 
+	 * @param teamName The team's name.
+	 * @param color    The team's color.
+	 * @return The created team.
+	 */
+	public static Team createTeam(String teamName, ChatColor color) {
+		Team team = createTeam(teamName);
+		if (team != null)
+			team.setColor(color);
+		return team;
+	}
+
+	/**
+	 * Create a team on the server, set its color and add each player in the given stream to the created team.
+	 * 
+	 * @param teamName The team's name.
+	 * @param color    The team's color.
+	 * @param players  The team's players.
+	 * @return The created team.
+	 */
+	public static Team createTeam(String teamName, ChatColor color, Stream<Player> players) {
+		Team team = createTeam(teamName);
+		if (team == null)
+			return null;
+
+		team.setColor(color);
+		players.peek(player -> team.addEntry(player.getName()));
+		return team;
+	}
+
+	/**
+	 * Remove the specified team from the server.
+	 * 
+	 * @param teamName The team'name to remove.
+	 */
+	public static void removeTeam(String teamName) {
+		BukkitManager.dispatchCommand("team remove " + teamName);
+	}
+
+	/**
+	 * Remove the specified player from the given team.
+	 * 
+	 * @param teamName The team's name to modify.
+	 * @param player   The player to remove.
+	 * 
+	 * @throws IllegalStateException if this team has been unregistered.
+	 */
+	public static void removePlayerFromTeam(String teamName, Player player) {
+		Optional<Team> team = getTeam(teamName);
+		if (team.isPresent())
+			removePlayerFromTeam(team.get(), player);
+	}
+
+	/**
+	 * Remove each player present in the stream from the given team.
+	 * 
+	 * @param teamName The team's name to modify.
+	 * @param players  A stream that contains all players to remove from the specified team.
+	 */
+	public static void removePlayersFromTeam(String teamName, Stream<Player> players) {
+		Optional<Team> team = getTeam(teamName);
+		if (team.isPresent())
+			removePlayersFromTeam(team.get(), players);
+	}
+
+	/**
+	 * Remove all player in the specified team.
+	 * 
+	 * @param team The team to modify.
+	 */
+	public static void removeAllPlayersFromTeam(String teamName) {
+		Optional<Team> team = getTeam(teamName);
+		if (team.isPresent())
+			removeAllPlayersFromTeam(team.get());
+	}
+
+	/**
+	 * Remove the player from its initial team (if any) and add it to the given team.
+	 * 
+	 * @param player The player to move.
+	 * @param to     The target team.
+	 */
+	public static void movePlayer(Player player, Team to) {
+		Optional<Team> team = getTeam(player);
+		if (team.isPresent())
+			removePlayerFromTeam(team.get(), player);
+		addPlayerToTeam(to, player);
+	}
+
+	/**
 	 * @return A stream that contains all registered team in the server.
 	 */
 	public static Stream<Team> getTeams() {
-		return new ArrayList<Team>(BukkitManager.getScoreboardManager().getMainScoreboard().getTeams()).stream();
+		return new ArrayList<Team>(getMainScoreboard().getTeams()).stream();
 	}
 
 	/**
@@ -31,8 +133,11 @@ public class TeamManager {
 	 */
 	public static Stream<Player> getPlayers(Team team) {
 		List<Player> players = new ArrayList<Player>();
-		for (String pl : team.getEntries())
-			players.add(Bukkit.getPlayer(pl));
+		for (String pl : team.getEntries()) {
+			Player player = Bukkit.getPlayer(pl);
+			if (player != null)
+				players.add(player);
+		}
 		return players.stream();
 	}
 
@@ -75,7 +180,7 @@ public class TeamManager {
 	 */
 	public static ChatColor getColor(Player player) {
 		Optional<Team> team = getTeam(player);
-		return team.isPresent() ? ChatColor.RESET : team.get().getColor();
+		return team.isPresent() ? team.get().getColor() : ChatColor.RESET;
 	}
 
 	/**
@@ -92,7 +197,7 @@ public class TeamManager {
 	 * @return An optional that contains all registered players in a team.
 	 */
 	public static Stream<Player> getPlayersInTeam() {
-		return getTeams().map(t -> getPlayers(t)).reduce(Stream.of(), (player, elt) -> Stream.concat(player, elt));
+		return getTeams().map(t -> getPlayers(t)).reduce(Stream.of(), (players, playersTeam) -> Stream.concat(players, playersTeam));
 	}
 
 	/**
@@ -123,8 +228,8 @@ public class TeamManager {
 	 * @see #getColleagues(Player)
 	 * @see #getRandom(Stream)
 	 */
-	public static Player getRandomColleague(Player player) {
-		return getRandom(getColleagues(player));
+	public static Optional<Player> getRandomColleague(Player player) {
+		return getRandom(getColleagues(player).collect(Collectors.toList()));
 	}
 
 	/**
@@ -134,10 +239,11 @@ public class TeamManager {
 	 * @param players A stream used to get a random player.
 	 * @return A player randomly choosen.
 	 */
-	public static Player getRandom(Stream<Player> players) {
-		List<Player> playersAsList = players.collect(Collectors.toList());
+	public static Optional<Player> getRandom(List<Player> players) {
 		Random rand = new Random();
-		return playersAsList.get(rand.nextInt(playersAsList.size()));
+		if (players.size() == 0)
+			return Optional.empty();
+		return Optional.of(players.get(rand.nextInt(players.size())));
 	}
 
 	/**
@@ -163,29 +269,6 @@ public class TeamManager {
 	}
 
 	/**
-	 * Create a team on the server. To simplify the way using this method, if you don't want to specify the display name of the team,
-	 * then displayName = null.
-	 * 
-	 * @param teamName    The name of the team.
-	 * @param displayName The display name of the team.
-	 */
-	public static Team createTeam(String teamName, String displayName) {
-		StringBuilder builder = new StringBuilder("team add " + teamName);
-		builder.append(displayName == null ? "" : "\"" + displayName + "\"");
-		BukkitManager.dispatchCommand(builder.toString());
-		return getTeam(teamName).get();
-	}
-
-	/**
-	 * Create a team on the server using method {@link #createTeam(String, String)} with displayName equals null.
-	 * 
-	 * @param teamName The name of the team.
-	 */
-	public static Team createTeam(String teamName) {
-		return createTeam(teamName, null);
-	}
-
-	/**
 	 * Add the player to the given team.
 	 * 
 	 * @param team   The team that will receive the player.
@@ -203,6 +286,49 @@ public class TeamManager {
 	 */
 	public static void addPlayersToTeam(Team team, Stream<Player> players) {
 		players.peek(p -> addPlayerToTeam(team, p));
+	}
+
+	/**
+	 * Add the given player to the team associated to the specified name if it exists.
+	 * 
+	 * @param teamName The team's name.
+	 * @param player   The player to add.
+	 * 
+	 * @return True if the team has been found, false otherwise.
+	 */
+	public static boolean addPlayerToTeam(String teamName, Player player) {
+		Optional<Team> optTeam = getTeam(teamName);
+		if (!optTeam.isPresent())
+			return false;
+
+		addPlayerToTeam(optTeam.get(), player);
+		return true;
+	}
+
+	/**
+	 * Add each player in the given stream to the team associated to the specified name if it exists.
+	 * 
+	 * @param teamName The team's name.
+	 * @param players  A stream that contains players to add.
+	 * 
+	 * @return True if the team has been found, false otherwise.
+	 */
+	public static boolean addPlayersToTeam(String teamName, Stream<Player> players) {
+		Optional<Team> optTeam = getTeam(teamName);
+		if (!optTeam.isPresent())
+			return false;
+
+		addPlayersToTeam(optTeam.get(), players);
+		return true;
+	}
+
+	/**
+	 * Remove the given player from its team. It equivalent to do in minecraft : <code>/team remove player.getName()</code>.
+	 * 
+	 * @param player The player to remove.
+	 */
+	public static void removePlayerFromTeam(Player player) {
+		BukkitManager.dispatchCommand("team leave " + player.getName());
 	}
 
 	/**
@@ -242,67 +368,14 @@ public class TeamManager {
 	}
 
 	/**
-	 * Remove the specified player from the given team.
-	 * 
-	 * @param team   The team to modify.
-	 * @param player The player to remove.
-	 * 
-	 * @throws IllegalStateException if this team has been unregistered.
-	 */
-	public static void removePlayerFromTeam(Team team, Player player) {
-		team.removeEntry(player.getName());
-	}
-
-	/**
-	 * Remove each player present in the stream from the given team.
-	 * 
-	 * @param team    The team to modify.
-	 * @param players A stream that contains all players to remove from the specified team.
-	 */
-	public static void removePlayersFromTeam(Team team, Stream<Player> players) {
-		players.peek(p -> removePlayerFromTeam(team, p));
-	}
-
-	/**
-	 * Remove all player in the specified team.
-	 * 
-	 * @param team The team to modify.
-	 */
-	public static void removeAllPlayersFromTeam(Team team) {
-		removePlayersFromTeam(team, getPlayers(team));
-	}
-
-	/**
-	 * Remove the player from its initial team (if any) and add it to the given team.
-	 * 
-	 * @param player The player to move.
-	 * @param to     The target team.
-	 */
-	public static void movePlayer(Player player, Team to) {
-		Optional<Team> team = getTeam(player);
-		if (team.isPresent())
-			removePlayerFromTeam(team.get(), player);
-		addPlayerToTeam(to, player);
-	}
-
-	/**
-	 * Remove the specified team from the server.
-	 * 
-	 * @param team The team to remove.
-	 */
-	public static void removeTeam(Team team) {
-		BukkitManager.dispatchCommand("team remove " + team.getName());
-	}
-
-	/**
 	 * Remove each team present in the stream from the server.
 	 * 
-	 * @param teams A stream that contains all teams to remove from the server.
+	 * @param teamNames A stream that contains the name of each team to remove from the server.
 	 * 
 	 * @see #removeTeam(Team)
 	 */
-	public static void removeTeam(Stream<Team> teams) {
-		teams.peek(t -> removeTeam(t));
+	public static void removeTeams(Stream<String> teamNames) {
+		teamNames.peek(teamName -> removeTeam(teamName));
 	}
 
 	/**
@@ -311,7 +384,7 @@ public class TeamManager {
 	 * @see #removeTeam(Stream)
 	 */
 	public static void removeAllTeam() {
-		removeTeam(getTeams());
+		removeTeams(getTeams().map(team -> team.getName()));
 	}
 
 	/**
@@ -389,5 +462,21 @@ public class TeamManager {
 		if (removed)
 			teams.remove(randomTeam);
 		return removed;
+	}
+
+	private static Scoreboard getMainScoreboard() {
+		return BukkitManager.getScoreboardManager().getMainScoreboard();
+	}
+
+	private static void removePlayerFromTeam(Team team, Player player) {
+		team.removeEntry(player.getName());
+	}
+
+	private static void removePlayersFromTeam(Team team, Stream<Player> players) {
+		players.peek(player -> removePlayerFromTeam(team, player));
+	}
+
+	private static void removeAllPlayersFromTeam(Team team) {
+		removePlayersFromTeam(team, getPlayers(team));
 	}
 }
