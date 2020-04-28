@@ -220,6 +220,17 @@ public class TeamManager {
 	}
 
 	/**
+	 * For each colleague of this player, create a new {@link PlayerLocation}.
+	 * 
+	 * @param player The player used to get information of its colleagues.
+	 * 
+	 * @return A stream that contains information about its colleagues.
+	 */
+	public static Stream<PlayerLocation> getColleaguesLocationToDisplay(Player player) {
+		return getColleagues(player).map(colleague -> new PlayerLocation(player, colleague));
+	}
+
+	/**
 	 * Get a random colleague of the specified player.
 	 * 
 	 * @param player The player used to get its colleagues.
@@ -478,5 +489,58 @@ public class TeamManager {
 
 	private static void removeAllPlayersFromTeam(Team team) {
 		removePlayersFromTeam(team, getPlayers(team));
+	}
+
+	public static class PlayerLocation {
+		private Player source, player;
+		private int distance;
+		private double yaw;
+		private EArrows arrow;
+
+		public PlayerLocation(Player source, Player player) {
+			this.source = source;
+			this.player = player;
+			this.distance = (int) WorldManager.getDistance2D(source.getLocation(), player.getLocation());
+			this.yaw = PlayerManager.getYaw(source, player);
+			arrow = EArrows.getArrow(yaw);
+		}
+
+		/**
+		 * @return The source player for this PlayerLocation.
+		 */
+		public Player getSource() {
+			return source;
+		}
+
+		/**
+		 * @return The player used to know the distance and the orientation between the source player and this player.
+		 */
+		public Player getPlayer() {
+			return player;
+		}
+
+		/**
+		 * @return The distance between the source player and the other player.
+		 */
+		public int getDistance() {
+			return distance;
+		}
+
+		/**
+		 * @return The yaw between the source player and the other player. This angle is in range [180;180]
+		 */
+		public double getYaw() {
+			return yaw;
+		}
+
+		/**
+		 * @return The arrow associated to the yaw.
+		 * 
+		 * @see #getYaw()
+		 * @see EArrows#getArrow(double)
+		 */
+		public EArrows getArrow() {
+			return arrow;
+		}
 	}
 }
