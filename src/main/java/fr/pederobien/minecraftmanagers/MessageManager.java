@@ -152,4 +152,19 @@ public class MessageManager {
 	public static void sendMessage(Stream<Player> players, DisplayOption option, String message, String color) {
 		sendMessage(players, option, message, false, false, color);
 	}
+
+	public enum DisplayOption {
+		TITLE("title"), SUB_TITLE("subtitle"), ACTION_BAR("actionbar");
+
+		private String name;
+
+		private DisplayOption(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+	}
 }
