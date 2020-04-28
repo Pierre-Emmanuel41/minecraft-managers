@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -220,6 +221,19 @@ public class TeamManager {
 	}
 
 	/**
+	 * Get colleagues of the given player that verify the given predicate. These colleagues correspond to the other players of the
+	 * given player's team.
+	 * 
+	 * @param player    The player used to get its colleagues.
+	 * @param predicate A filter for the players' selection.
+	 * 
+	 * @return All players in the team of the given player without the specified player.
+	 */
+	public static Stream<Player> getColleagues(Player player, Predicate<Player> predicate) {
+		return getPlayers(getTeam(player).get()).filter(p -> !p.equals(player)).filter(predicate);
+	}
+
+	/**
 	 * For each colleague of this player, create a new {@link PlayerLocation}.
 	 * 
 	 * @param player The player used to get information of its colleagues.
@@ -228,6 +242,19 @@ public class TeamManager {
 	 */
 	public static Stream<PlayerLocation> getColleaguesLocationToDisplay(Player player) {
 		return getColleagues(player).map(colleague -> new PlayerLocation(player, colleague));
+	}
+
+	/**
+	 * Filter the stream returned by {@link #getColleagues(Player)} using the specified predicate, and create a new
+	 * {@link PlayerLocation} for each remaining colleague.
+	 * 
+	 * @param player    The player used to get information of its colleagues.
+	 * @param predicate A filter for the players' selection.
+	 * 
+	 * @return A stream that contains information about its colleagues.
+	 */
+	public static Stream<PlayerLocation> getColleaguesLocationToDisplay(Player player, Predicate<Player> predicate) {
+		return getColleagues(player).filter(predicate).map(colleague -> new PlayerLocation(player, colleague));
 	}
 
 	/**
@@ -241,6 +268,20 @@ public class TeamManager {
 	 */
 	public static Optional<Player> getRandomColleague(Player player) {
 		return getRandom(getColleagues(player).collect(Collectors.toList()));
+	}
+
+	/**
+	 * Filter the stream returned by {@link #getColleagues(Player)} using the specified predicate, then collect this stream using
+	 * {@link Collectors#toList()} and finally choose a random player from this list.
+	 * 
+	 * @param player The player used to get its colleagues.
+	 * @return A player from the same team as the given player.
+	 * 
+	 * @see #getColleagues(Player)
+	 * @see #getRandom(Stream)
+	 */
+	public static Optional<Player> getRandomColleague(Player player, Predicate<Player> predicate) {
+		return getRandom(getColleagues(player).filter(predicate).collect(Collectors.toList()));
 	}
 
 	/**
