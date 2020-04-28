@@ -78,10 +78,10 @@ public class MessageManager {
 	public static void sendMessage(DisplayOption option, Player player, String message, boolean bold, boolean italic, String color) {
 		StringBuilder builder = new StringBuilder("title " + player.getName() + " ");
 		builder.append(option.toString() + " ");
-		builder.append("{\"text\":\"" + message + "\", ");
-		builder.append(bold == false ? "" : "\"bold\":\"" + bold + "\", ");
-		builder.append(italic == false ? "" : "\"italic\":\"" + italic + "\", ");
-		builder.append(color == null ? "" : "\"color\":\"" + color + "\"");
+		builder.append("{\"text\":\"" + message);
+		builder.append(bold == false ? "" : "\", \"bold\":\"" + bold);
+		builder.append(italic == false ? "" : "\", \"italic\":\"" + italic);
+		builder.append(color == null ? "" : "\", \"color\":\"" + color + "\"");
 		builder.append("}");
 		BukkitManager.dispatchCommand(builder.toString());
 	}
