@@ -432,4 +432,17 @@ public class PlayerManager {
 	public static void killPlayers(Stream<Player> players) {
 		players.peek(p -> killPlayer(p));
 	}
+
+	public static double getYaw(Player player1, Player player2) {
+		int xrel = player2.getLocation().getBlockX() - player1.getLocation().getBlockX();
+		int zrel = player2.getLocation().getBlockZ() - player1.getLocation().getBlockZ();
+		float thetap1p2 = (float) Math.toDegrees(Math.atan2(xrel, zrel));
+		double yawP1 = player1.getLocation().getYaw();
+
+		// Bring back yawP1 between [-180;180]
+		yawP1 = yawP1 > 180 ? yawP1 - 360 : yawP1 < -180 ? yawP1 + 360 : yawP1;
+
+		// Bring back thetap1p2 + yawP1 between [-180;180]
+		return thetap1p2 + yawP1 > 180 ? thetap1p2 + yawP1 - 360 : thetap1p2 + yawP1 < -180 ? thetap1p2 + yawP1 + 360 : thetap1p2 + yawP1;
+	}
 }
