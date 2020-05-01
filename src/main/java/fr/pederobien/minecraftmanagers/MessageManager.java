@@ -1,5 +1,6 @@
 package fr.pederobien.minecraftmanagers;
 
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 
@@ -97,6 +98,41 @@ public class MessageManager {
 	 * @param messages An array that contains all messages to send to the player.
 	 */
 	public static void sendMessage(DisplayOption option, Stream<Player> players, TitleMessage... messages) {
+		players.peek(player -> sendMessage(option, player, messages));
+	}
+
+	/**
+	 * Send all messages to the given player. This messages are concatenated together and the result is send to the player. This
+	 * method is equivalent to minecraft title commands.
+	 * 
+	 * @param option   Option to send the message as title, subtitle or in actionbar.
+	 * @param player   The player that will receive the message.
+	 * @param messages A list that contains all messages to send to the player.
+	 */
+	public static void sendMessage(DisplayOption option, Player player, List<TitleMessage> messages) {
+		StringJoiner cmd = new StringJoiner(" ");
+		cmd.add("title").add(player.getName()).add(option.toString());
+		if (messages.size() > 1) {
+			StringJoiner msgJoiner = new StringJoiner(", ", "[", "]");
+			msgJoiner.add("\"\"");
+			for (TitleMessage message : messages)
+				msgJoiner.add(message.toJson());
+			cmd.add(msgJoiner.toString());
+		} else {
+			cmd.add(messages.get(0).toJson());
+		}
+		BukkitManager.dispatchCommand(cmd.toString());
+	}
+
+	/**
+	 * Send all messages to the given player. This messages are concatenated together and the result is send to the player. This
+	 * method is equivalent to minecraft title commands.
+	 * 
+	 * @param option   Option to send the message as title, subtitle or in actionbar.
+	 * @param player   The player that will receive the message.
+	 * @param messages A list that contains all messages to send to the player.
+	 */
+	public static void sendMessage(DisplayOption option, Stream<Player> players, List<TitleMessage> messages) {
 		players.peek(player -> sendMessage(option, player, messages));
 	}
 
