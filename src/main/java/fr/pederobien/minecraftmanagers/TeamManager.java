@@ -234,14 +234,28 @@ public class TeamManager {
 	}
 
 	/**
+	 * Create a {@link ColleagueInfo} for the given source player and the given colleague. This colleague info contains informations
+	 * about the colleague : for example the distance between this two players or the direction of colleague in comparison with the
+	 * source player.
+	 * 
+	 * @param source    The player used as reference for the colleague info.
+	 * @param colleague The player used to know more information about him in comparison to the source player.
+	 * 
+	 * @return A ColleagueInfo.
+	 */
+	public static ColleagueInfo createColleagueInfo(Player source, Player colleague) {
+		return new ColleagueInfo(source, colleague);
+	}
+
+	/**
 	 * For each colleague of this player, create a new {@link PlayerLocation}.
 	 * 
 	 * @param player The player used to get information of its colleagues.
 	 * 
 	 * @return A stream that contains information about its colleagues.
 	 */
-	public static Stream<PlayerLocation> getColleaguesLocationToDisplay(Player player) {
-		return getColleagues(player).map(colleague -> new PlayerLocation(player, colleague));
+	public static Stream<ColleagueInfo> getColleaguesInfo(Player player) {
+		return getColleagues(player).map(colleague -> createColleagueInfo(player, colleague));
 	}
 
 	/**
@@ -253,8 +267,8 @@ public class TeamManager {
 	 * 
 	 * @return A stream that contains information about its colleagues.
 	 */
-	public static Stream<PlayerLocation> getColleaguesLocationToDisplay(Player player, Predicate<Player> predicate) {
-		return getColleagues(player).filter(predicate).map(colleague -> new PlayerLocation(player, colleague));
+	public static Stream<ColleagueInfo> getColleaguesInfo(Player player, Predicate<Player> predicate) {
+		return getColleagues(player).filter(predicate).map(colleague -> createColleagueInfo(player, colleague));
 	}
 
 	/**
@@ -532,18 +546,20 @@ public class TeamManager {
 		removePlayersFromTeam(team, getPlayers(team));
 	}
 
-	public static class PlayerLocation {
-		private Player source, player;
+	public static class ColleagueInfo {
+		private Player source, colleague;
 		private int distance;
 		private double yaw;
+		private boolean isInDifferentWorld;
 		private EArrows arrow;
 
-		public PlayerLocation(Player source, Player player) {
+		public ColleagueInfo(Player source, Player colleague) {
 			this.source = source;
-			this.player = player;
-			this.distance = (int) WorldManager.getDistance2D(source.getLocation(), player.getLocation());
-			this.yaw = PlayerManager.getYaw(source, player);
-			arrow = EArrows.getArrow(yaw);
+			this.colleague = colleague;
+			this.distance = (int) WorldManager.getDistance2D(source.getLocation(), colleague.getLocation());
+			this.yaw = PlayerManager.getYaw(source, colleague);
+			this.isInDifferentWorld = source.getWorld() == colleague.getWorld();
+			this.arrow = EArrows.getArrow(yaw);
 		}
 
 		/**
@@ -556,8 +572,8 @@ public class TeamManager {
 		/**
 		 * @return The player used to know the distance and the orientation between the source player and this player.
 		 */
-		public Player getPlayer() {
-			return player;
+		public Player getColleague() {
+			return colleague;
 		}
 
 		/**
@@ -572,6 +588,17 @@ public class TeamManager {
 		 */
 		public double getYaw() {
 			return yaw;
+		}
+
+		/**
+		 * If both players are in different world, the distance between those player is {@link Double#NaN}.
+		 * 
+		 * @return True if the player source and the colleague are in different world.
+		 * 
+		 * @see #getDistance()
+		 */
+		public boolean isInDifferentWorld() {
+			return isInDifferentWorld;
 		}
 
 		/**
