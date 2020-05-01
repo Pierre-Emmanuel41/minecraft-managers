@@ -584,7 +584,7 @@ public class TeamManager {
 		}
 
 		/**
-		 * @return The yaw between the source player and the other player. This angle is in range [180;180]
+		 * @return The yaw between the source player and the other player. This angle is in range [-180;180]
 		 */
 		public double getYaw() {
 			return yaw;
