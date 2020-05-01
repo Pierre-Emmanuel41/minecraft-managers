@@ -41,8 +41,11 @@ public class WorldManager {
 	public static final World END_WORLD;
 
 	private static final String SURFACE_WORLD_NAME = "world";
+	private static final String OVERWORLD_WORLD_NAME_NORMALISED = "Overworld";
 	private static final String NETHER_WORLD_NAME = "world_nether";
+	private static final String NETHER_WORLD_NAME_NORMALISED = "Nether";
 	private static final String END_WORLD_NAME = "world_the_end";
+	private static final String END_WORLD_NAME_NORMALISED = "Ender";
 
 	static {
 		SURFACE_WORLD = getWorld(SURFACE_WORLD_NAME);
@@ -81,6 +84,23 @@ public class WorldManager {
 		MOBS.add(EntityType.WITHER_SKELETON);
 		MOBS.add(EntityType.ZOMBIE);
 		MOBS.add(EntityType.ZOMBIE_VILLAGER);
+	}
+
+	/**
+	 * Get the normalised name for the given world. For the overworld : "Overworld", for the nether : "Nether", for the end : "Ender".
+	 * 
+	 * @param world The world used to get its normalised name.
+	 * @return The normalised name associated to the given world. If the world is not one of the previous three world, then the
+	 *         returned name is null.
+	 */
+	public static String getWorldNameNormalised(World world) {
+		if (world == SURFACE_WORLD)
+			return OVERWORLD_WORLD_NAME_NORMALISED;
+		if (world == NETHER_WORLD)
+			return NETHER_WORLD_NAME_NORMALISED;
+		if (world == END_WORLD)
+			return END_WORLD_NAME_NORMALISED;
+		return null;
 	}
 
 	/**
