@@ -68,7 +68,7 @@ public class MessageManager {
 
 	/**
 	 * Send all messages to the given player. This messages are concatenated together and the result is send to the player. This
-	 * method is equivalent to minecraft title commands.
+	 * method is equivalent to minecraft title commands. If the length of <code>messages</code> equals 0, then do nothing.
 	 * 
 	 * @param option   Option to send the message as title, subtitle or in actionbar.
 	 * @param player   The player that will receive the message.
@@ -83,10 +83,11 @@ public class MessageManager {
 			for (TitleMessage message : messages)
 				msgJoiner.add(message.toJson());
 			cmd.add(msgJoiner.toString());
-		} else {
+			BukkitManager.dispatchCommand(cmd.toString());
+		} else if (messages.length == 1) {
 			cmd.add(messages[0].toJson());
+			BukkitManager.dispatchCommand(cmd.toString());
 		}
-		BukkitManager.dispatchCommand(cmd.toString());
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class MessageManager {
 
 	/**
 	 * Send all messages to the given player. This messages are concatenated together and the result is send to the player. This
-	 * method is equivalent to minecraft title commands.
+	 * method is equivalent to minecraft title commands. If the size of the list equals 0, then do nothing.
 	 * 
 	 * @param option   Option to send the message as title, subtitle or in actionbar.
 	 * @param player   The player that will receive the message.
@@ -118,10 +119,11 @@ public class MessageManager {
 			for (TitleMessage message : messages)
 				msgJoiner.add(message.toJson());
 			cmd.add(msgJoiner.toString());
-		} else {
+			BukkitManager.dispatchCommand(cmd.toString());
+		} else if (messages.size() == 1) {
 			cmd.add(messages.get(0).toJson());
+			BukkitManager.dispatchCommand(cmd.toString());
 		}
-		BukkitManager.dispatchCommand(cmd.toString());
 	}
 
 	/**
