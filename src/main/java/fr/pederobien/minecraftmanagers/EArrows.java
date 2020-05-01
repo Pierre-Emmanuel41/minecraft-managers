@@ -115,10 +115,10 @@ public enum EArrows {
 		map.put(Range.of(112.5, 157.5), EArrows.BOTTOM_LEFT);
 		map.put(Range.of(157.5, 181), EArrows.BOTTOM);
 
-		// From -22.5° to -180°
-		map.put(Range.of(-22.5, -67.5), EArrows.TOP_RIGHT);
-		map.put(Range.of(-67.5, -112.5), EArrows.RIGHT);
-		map.put(Range.of(-112.5, -157.5), EArrows.BOTTOM_RIGHT);
-		map.put(Range.of(-157.5, -181), EArrows.BOTTOM);
+		// From -180° to -22.5°
+		map.put(Range.of(-181, -157.5), EArrows.BOTTOM);
+		map.put(Range.of(-157.5, -112.5), EArrows.BOTTOM_RIGHT);
+		map.put(Range.of(-112.5, -67.5), EArrows.RIGHT);
+		map.put(Range.of(-67.5, -22.5), EArrows.TOP_RIGHT);
 	}
 }
