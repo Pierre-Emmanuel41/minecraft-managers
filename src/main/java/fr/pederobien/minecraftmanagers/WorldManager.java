@@ -806,6 +806,19 @@ public class WorldManager {
 		return from.getX() <= location.getX() && location.getX() <= to.getX() && from.getZ() <= location.getZ() && location.getZ() <= to.getZ();
 	}
 
+	public static double getYaw(Player player, Location location) {
+		int xrel = player.getLocation().getBlockX() - location.getBlockX();
+		int zrel = player.getLocation().getBlockZ() - location.getBlockZ();
+		float thetap1p2 = (float) Math.toDegrees(Math.atan2(xrel, zrel));
+		double yawP1 = player.getLocation().getYaw();
+
+		// Bring back yawP1 between [-180;180]
+		yawP1 = yawP1 > 180 ? yawP1 - 360 : yawP1 < -180 ? yawP1 + 360 : yawP1;
+
+		// Bring back thetap1p2 + yawP1 between [-180;180]
+		return thetap1p2 + yawP1 > 180 ? thetap1p2 + yawP1 - 360 : thetap1p2 + yawP1 < -180 ? thetap1p2 + yawP1 + 360 : thetap1p2 + yawP1;
+	}
+
 	private static void checkLocation(Location from, Location to) {
 		if (from == null || to == null) {
 			throw new IllegalArgumentException("Cannot measure distance to a null location");

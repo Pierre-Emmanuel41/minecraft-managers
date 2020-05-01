@@ -557,7 +557,7 @@ public class TeamManager {
 			this.source = source;
 			this.colleague = colleague;
 			this.distance = (int) WorldManager.getDistance2D(source.getLocation(), colleague.getLocation());
-			this.yaw = PlayerManager.getYaw(source, colleague);
+			this.yaw = WorldManager.getYaw(source, colleague.getLocation());
 			this.isInDifferentWorld = source.getWorld() != colleague.getWorld();
 			this.arrow = EArrows.getArrow(yaw);
 		}
