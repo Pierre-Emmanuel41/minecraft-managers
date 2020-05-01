@@ -750,7 +750,7 @@ public class WorldManager {
 	 * @see #getScaredDistance2D(Location, Location)
 	 */
 	public static double getDistance2D(Location from, Location to) {
-		return Math.sqrt(getScaredDistance2D(from, to));
+		return Math.sqrt(getSquaredDistance2D(from, to));
 	}
 
 	/**
@@ -764,9 +764,13 @@ public class WorldManager {
 	 * 
 	 * @see Vector
 	 */
-	public static double getScaredDistance2D(Location from, Location to) {
-		checkLocation(from, to);
-		return NumberConversions.square(from.getX() - to.getX()) + NumberConversions.square(from.getZ() - to.getZ());
+	public static double getSquaredDistance2D(Location from, Location to) {
+		try {
+			checkLocation(from, to);
+			return NumberConversions.square(from.getX() - to.getX()) + NumberConversions.square(from.getZ() - to.getZ());
+		} catch (IllegalArgumentException e) {
+			return Double.NaN;
+		}
 	}
 
 	/**
