@@ -26,9 +26,9 @@ public class WorldManager {
 	public static final Set<EntityType> MOBS;
 
 	/**
-	 * The surface world whose name is {@link #SURFACE_WORLD_NAME}
+	 * The surface world whose name is {@link #OVERWORLD_NAME}
 	 */
-	public static final World SURFACE_WORLD;
+	public static final World OVERWORLD;
 
 	/**
 	 * The surface world whose name is {@link #NETHER_WORLD_NAME}
@@ -40,17 +40,25 @@ public class WorldManager {
 	 */
 	public static final World END_WORLD;
 
-	private static final String SURFACE_WORLD_NAME = "world";
-	private static final String OVERWORLD_WORLD_NAME_NORMALISED = "Overworld";
-	private static final String NETHER_WORLD_NAME = "world_nether";
-	private static final String NETHER_WORLD_NAME_NORMALISED = "Nether";
-	private static final String END_WORLD_NAME = "world_the_end";
-	private static final String END_WORLD_NAME_NORMALISED = "Ender";
+	/**
+	 * The normalised name associated to the world {@link #OVERWORLD}
+	 */
+	public static final String OVERWORLD_NAME = "Overworld";
+
+	/**
+	 * The normalised name associated to the world {@link #NETHER_WORLD}
+	 */
+	public static final String NETHER_WORLD_NAME = "Nether";
+
+	/**
+	 * The normalised name associated to the world {@link #END_WORLD}
+	 */
+	public static final String END_WORLD_NAME = "Ender";
 
 	static {
-		SURFACE_WORLD = getWorld(SURFACE_WORLD_NAME);
-		NETHER_WORLD = getWorld(NETHER_WORLD_NAME);
-		END_WORLD = getWorld(END_WORLD_NAME);
+		OVERWORLD = getWorld("world");
+		NETHER_WORLD = getWorld("world_nether");
+		END_WORLD = getWorld("world_the_end");
 
 		MOBS = new HashSet<>();
 
@@ -94,12 +102,12 @@ public class WorldManager {
 	 *         returned name is null.
 	 */
 	public static String getWorldNameNormalised(World world) {
-		if (world == SURFACE_WORLD)
-			return OVERWORLD_WORLD_NAME_NORMALISED;
+		if (world == OVERWORLD)
+			return OVERWORLD_NAME;
 		if (world == NETHER_WORLD)
-			return NETHER_WORLD_NAME_NORMALISED;
+			return NETHER_WORLD_NAME;
 		if (world == END_WORLD)
-			return END_WORLD_NAME_NORMALISED;
+			return END_WORLD_NAME;
 		return null;
 	}
 
@@ -112,7 +120,39 @@ public class WorldManager {
 	 * @see BukkitManager#getWorld(String)
 	 */
 	public static World getWorld(String name) {
-		return BukkitManager.getWorld(name);
+		switch (name) {
+		case OVERWORLD_NAME:
+			return OVERWORLD;
+		case NETHER_WORLD_NAME:
+			return NETHER_WORLD;
+		case END_WORLD_NAME:
+			return END_WORLD;
+		default:
+			return BukkitManager.getWorld(name);
+		}
+	}
+
+	/**
+	 * @return A list of worlds that contains the {@link #OVERWORLD}, {@link #NETHER_WORLD} and {@link #END_WORLD}
+	 */
+	public static List<World> getWorlds() {
+		List<World> worlds = new ArrayList<World>();
+		worlds.add(OVERWORLD);
+		worlds.add(NETHER_WORLD);
+		worlds.add(END_WORLD);
+		return worlds;
+	}
+
+	/**
+	 * @return A list of world's name that contains the {@link #OVERWORLD_NAME}, {@link #NETHER_WORLD_NAME} and
+	 *         {@link #END_WORLD_NAME}
+	 */
+	public static List<String> getWorldNormalisedNames() {
+		List<String> worlds = new ArrayList<String>();
+		worlds.add(OVERWORLD_NAME);
+		worlds.add(NETHER_WORLD_NAME);
+		worlds.add(END_WORLD_NAME);
+		return worlds;
 	}
 
 	/**
@@ -126,12 +166,12 @@ public class WorldManager {
 	}
 
 	/**
-	 * This method call {@link #setPVP(World, boolean)} with world equals {@link #SURFACE_WORLD}
+	 * This method call {@link #setPVP(World, boolean)} with world equals {@link #OVERWORLD}
 	 * 
 	 * @param pvp True if the pvp is enabled, false otherwise.
 	 */
-	public static void setPVPInSurface(boolean pvp) {
-		setPVP(SURFACE_WORLD, pvp);
+	public static void setPVPInOverworld(boolean pvp) {
+		setPVP(OVERWORLD, pvp);
 	}
 
 	/**
@@ -148,7 +188,7 @@ public class WorldManager {
 	 * 
 	 * @param pvp True if the pvp is enabled, false otherwise.
 	 */
-	public static void setPVPInEnd(boolean pvp) {
+	public static void setPVPInEnder(boolean pvp) {
 		setPVP(END_WORLD, pvp);
 	}
 
@@ -166,14 +206,14 @@ public class WorldManager {
 
 	/**
 	 * Constructs a new Location with the given coordinates. This method call {@link #createLocation(World, double, double, double)}
-	 * with world equals {@link #SURFACE_WORLD}.
+	 * with world equals {@link #OVERWORLD}.
 	 *
 	 * @param x The x-coordinate of this new location.
 	 * @param y The y-coordinate of this new location.
 	 * @param z The z-coordinate of this new location.
 	 */
-	public static Location locationFromSurface(int x, int y, int z) {
-		return createLocation(SURFACE_WORLD, x, y, z);
+	public static Location locationFromOverworld(int x, int y, int z) {
+		return createLocation(OVERWORLD, x, y, z);
 	}
 
 	/**
@@ -196,7 +236,7 @@ public class WorldManager {
 	 * @param y The y-coordinate of this new location.
 	 * @param z The z-coordinate of this new location.
 	 */
-	public static Location locationFromEnd(int x, int y, int z) {
+	public static Location locationFromEnder(int x, int y, int z) {
 		return createLocation(END_WORLD, x, y, z);
 	}
 
@@ -232,7 +272,7 @@ public class WorldManager {
 
 	/**
 	 * Gets the {@link Block} in the surface world at the given coordinates using {@link #getBlockAt(World, int, int, int)} with world
-	 * equals {@link #SURFACE_WORLD}.
+	 * equals {@link #OVERWORLD}.
 	 *
 	 * @param x X-coordinate of the block.
 	 * @param y Y-coordinate of the block.
@@ -240,8 +280,8 @@ public class WorldManager {
 	 * 
 	 * @return Block at the given coordinates.
 	 */
-	public static Block getBlockAtFromSurface(int x, int y, int z) {
-		return getBlockAt(SURFACE_WORLD, x, y, z);
+	public static Block getBlockAtFromOverworld(int x, int y, int z) {
+		return getBlockAt(OVERWORLD, x, y, z);
 	}
 
 	/**
@@ -268,7 +308,7 @@ public class WorldManager {
 	 * 
 	 * @return Block at the given coordinates.
 	 */
-	public static Block getBlockAtFromEnd(int x, int y, int z) {
+	public static Block getBlockAtFromEnder(int x, int y, int z) {
 		return getBlockAt(END_WORLD, x, y, z);
 	}
 
@@ -280,12 +320,12 @@ public class WorldManager {
 	 * @return Block at the given location.
 	 */
 	public static Block getBlockAt(String world, Location location) {
-		return BukkitManager.getWorld(world).getBlockAt(location);
+		return getWorld(world).getBlockAt(location);
 	}
 
 	/**
 	 * Gets the {@link Block} in the surface world at the given coordinates using {@link #getBlockAt(String, Location)} with world
-	 * equals {@link #SURFACE_WORLD_NAME}.
+	 * equals {@link #OVERWORLD_NAME}.
 	 *
 	 * @param x X-coordinate of the block.
 	 * @param y Y-coordinate of the block.
@@ -293,8 +333,8 @@ public class WorldManager {
 	 * 
 	 * @return Block at the given coordinates.
 	 */
-	public static Block getBlockAtFromSurface(Location location) {
-		return getBlockAt(SURFACE_WORLD_NAME, location);
+	public static Block getBlockAtFromOverworld(Location location) {
+		return getBlockAt(OVERWORLD_NAME, location);
 	}
 
 	/**
@@ -321,7 +361,7 @@ public class WorldManager {
 	 * 
 	 * @return Block at the given coordinates.
 	 */
-	public static Block getBlockAtFromEnd(Location location) {
+	public static Block getBlockAtFromEnder(Location location) {
 		return getBlockAt(END_WORLD_NAME, location);
 	}
 
@@ -340,15 +380,15 @@ public class WorldManager {
 	}
 
 	/**
-	 * Call the method {@link #getHighestBlockYAt(World, int, int)} with world equals {@link #SURFACE_WORLD}.
+	 * Call the method {@link #getHighestBlockYAt(World, int, int)} with world equals {@link #OVERWORLD}.
 	 * 
 	 * @param x X-coordinate of the block.
 	 * @param z Z-coordinate of the block.
 	 * 
 	 * @return Highest non-empty block.
 	 */
-	public static Block getFromSurfaceHighestBlockYAt(int x, int z) {
-		return getHighestBlockYAt(SURFACE_WORLD, x, z);
+	public static Block getFromOverworldHighestBlockYAt(int x, int z) {
+		return getHighestBlockYAt(OVERWORLD, x, z);
 	}
 
 	/**
@@ -371,7 +411,7 @@ public class WorldManager {
 	 * 
 	 * @return Highest non-empty block.
 	 */
-	public static Block getFromEndHighestBlockYAt(int x, int z) {
+	public static Block getFromEnderHighestBlockYAt(int x, int z) {
 		return getHighestBlockYAt(END_WORLD, x, z);
 	}
 
@@ -426,13 +466,13 @@ public class WorldManager {
 	}
 
 	/**
-	 * Call the method {@link #setWorldBorderCenter(World, int, int)} with world equals {@link #SURFACE_WORLD}
+	 * Call the method {@link #setWorldBorderCenter(World, int, int)} with world equals {@link #OVERWORLD}
 	 * 
 	 * @param x X-coordinate of the block.
 	 * @param z Z-coordinate of the block.
 	 */
-	public static void setSurfaceBorderCenter(int x, int z) {
-		setWorldBorderCenter(SURFACE_WORLD, x, z);
+	public static void setOverworldBorderCenter(int x, int z) {
+		setWorldBorderCenter(OVERWORLD, x, z);
 	}
 
 	/**
@@ -451,7 +491,7 @@ public class WorldManager {
 	 * @param x X-coordinate of the block.
 	 * @param z Z-coordinate of the block.
 	 */
-	public static void setEndBorderCenter(int x, int z) {
+	public static void setEnderBorderCenter(int x, int z) {
 		setWorldBorderCenter(END_WORLD, x, z);
 	}
 
@@ -467,13 +507,13 @@ public class WorldManager {
 	}
 
 	/**
-	 * Call the method {@link #setWorldBorderCenter(World, Block)} with world equals {@link #SURFACE_WORLD}
+	 * Call the method {@link #setWorldBorderCenter(World, Block)} with world equals {@link #OVERWORLD}
 	 * 
 	 * @param x X-coordinate of the block.
 	 * @param z Z-coordinate of the block.
 	 */
-	public static void setSurfaceBorderCenter(Block block) {
-		setWorldBorderCenter(SURFACE_WORLD, block);
+	public static void setOverworldBorderCenter(Block block) {
+		setWorldBorderCenter(OVERWORLD, block);
 	}
 
 	/**
@@ -492,7 +532,7 @@ public class WorldManager {
 	 * @param x X-coordinate of the block.
 	 * @param z Z-coordinate of the block.
 	 */
-	public static void setEndBorderCenter(Block block) {
+	public static void setEnderBorderCenter(Block block) {
 		setWorldBorderCenter(END_WORLD, block);
 	}
 
@@ -507,12 +547,12 @@ public class WorldManager {
 	}
 
 	/**
-	 * Call the method {@link #setWorldBorderDiamter(World, double)} with world equals {@link #SURFACE_WORLD}
+	 * Call the method {@link #setWorldBorderDiamter(World, double)} with world equals {@link #OVERWORLD}
 	 * 
 	 * @param diameter The diameter of the border in the surface world.
 	 */
-	public static void setSurfaceBorderDiameter(double diameter) {
-		setWorldBorderDiameter(SURFACE_WORLD, diameter);
+	public static void setOverworldBorderDiameter(double diameter) {
+		setWorldBorderDiameter(OVERWORLD, diameter);
 	}
 
 	/**
@@ -529,7 +569,7 @@ public class WorldManager {
 	 * 
 	 * @param diameter The diameter of the border in the end world.
 	 */
-	public static void setEndBorderDiameter(double diameter) {
+	public static void setEnderBorderDiameter(double diameter) {
 		setWorldBorderDiameter(END_WORLD, diameter);
 	}
 
@@ -707,8 +747,8 @@ public class WorldManager {
 	/**
 	 * @return A stream that contains all players currently in the surface world.
 	 */
-	public static Stream<Player> getPlayersInSurface() {
-		return getPlayerInWorld(SURFACE_WORLD);
+	public static Stream<Player> getPlayersInOverworld() {
+		return getPlayerInWorld(OVERWORLD);
 	}
 
 	/**
@@ -721,7 +761,7 @@ public class WorldManager {
 	/**
 	 * @return A stream that contains all players currently in the end world.
 	 */
-	public static Stream<Player> getPlayersInEnd() {
+	public static Stream<Player> getPlayersInEnder() {
 		return getPlayerInWorld(END_WORLD);
 	}
 
