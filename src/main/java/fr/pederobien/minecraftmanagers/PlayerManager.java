@@ -47,7 +47,7 @@ public class PlayerManager {
 	}
 
 	/**
-	 * Get the locale associated to the player. This locale correspond to the language used by the player to player minecraft.
+	 * Get the locale associated to the player. This locale correspond to the language used by the player to play minecraft.
 	 * 
 	 * @param player The player used to get its language.
 	 * @return The player's language if it exists, null otherwise.
