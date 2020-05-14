@@ -2,6 +2,7 @@ package fr.pederobien.minecraftmanagers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 import org.bukkit.GameMode;
@@ -43,6 +44,18 @@ public class PlayerManager {
 	 */
 	public static Player getPlayer(String name) {
 		return BukkitManager.getPlayer(name);
+	}
+
+	/**
+	 * Get the locale associated to the player. This locale correspond to the language used by the player to player minecraft.
+	 * 
+	 * @param player The player used to get its language.
+	 * @return The player's language if it exists, null otherwise.
+	 * 
+	 * @see Locale#forLanguageTag(String)
+	 */
+	public static Locale getPlayerLocale(Player player) {
+		return Locale.forLanguageTag(player.getLocale().replace('_', '-'));
 	}
 
 	/**
