@@ -847,8 +847,8 @@ public class WorldManager {
 	}
 
 	public static double getYaw(Player player, Location location) {
-		int xrel = player.getLocation().getBlockX() - location.getBlockX();
-		int zrel = player.getLocation().getBlockZ() - location.getBlockZ();
+		int xrel = location.getBlockX() - player.getLocation().getBlockX();
+		int zrel = location.getBlockZ() - player.getLocation().getBlockZ();
 		float thetap1p2 = (float) Math.toDegrees(Math.atan2(xrel, zrel));
 		double yawP1 = player.getLocation().getYaw();
 
