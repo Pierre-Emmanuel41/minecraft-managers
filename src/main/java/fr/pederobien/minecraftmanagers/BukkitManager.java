@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -15,8 +16,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.google.common.collect.ImmutableList;
@@ -168,5 +171,14 @@ public class BukkitManager {
 	 */
 	public static void broadcastMessage(String message) {
 		Bukkit.broadcastMessage(message);
+	}
+
+	/**
+	 * Gets the scheduler for managing scheduled events.
+	 *
+	 * @return a scheduling service for this server
+	 */
+	public static BukkitScheduler getScheduler() {
+		return Bukkit.getScheduler();
 	}
 }
