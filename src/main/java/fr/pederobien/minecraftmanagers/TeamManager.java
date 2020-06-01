@@ -56,7 +56,7 @@ public class TeamManager {
 			return null;
 
 		team.setColor(color);
-		players.peek(player -> team.addEntry(player.getName()));
+		players.forEach(player -> team.addEntry(player.getName()));
 		return team;
 	}
 
@@ -351,7 +351,7 @@ public class TeamManager {
 	 * @param players Players to add to the team.
 	 */
 	public static void addPlayersToTeam(Team team, Stream<Player> players) {
-		players.peek(p -> addPlayerToTeam(team, p));
+		players.forEach(p -> addPlayerToTeam(team, p));
 	}
 
 	/**
@@ -441,7 +441,7 @@ public class TeamManager {
 	 * @see #removeTeam(Team)
 	 */
 	public static void removeTeams(Stream<String> teamNames) {
-		teamNames.peek(teamName -> removeTeam(teamName));
+		teamNames.forEach(teamName -> removeTeam(teamName));
 	}
 
 	/**
@@ -539,7 +539,7 @@ public class TeamManager {
 	}
 
 	private static void removePlayersFromTeam(Team team, Stream<Player> players) {
-		players.peek(player -> removePlayerFromTeam(team, player));
+		players.forEach(player -> removePlayerFromTeam(team, player));
 	}
 
 	private static void removeAllPlayersFromTeam(Team team) {

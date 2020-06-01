@@ -73,7 +73,7 @@ public class ScoreboardManager {
 	 * @param scoreboard The scoreboard to give to each player present in the previous stream.
 	 */
 	public static void setPlayersScoreboard(Stream<Player> players, Scoreboard scoreboard) {
-		players.peek(p -> setPlayerScoreboard(p, scoreboard));
+		players.forEach(p -> setPlayerScoreboard(p, scoreboard));
 	}
 
 	/**
@@ -115,6 +115,6 @@ public class ScoreboardManager {
 	 * @see #removePlayerScoreboard(Player)
 	 */
 	public static void removePlayersScoreboard(Stream<Player> players) {
-		players.peek(p -> removePlayerScoreboard(p));
+		players.forEach(p -> removePlayerScoreboard(p));
 	}
 }

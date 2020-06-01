@@ -53,7 +53,7 @@ public class MessageManager {
 	 * @param message The message to send to all players in the previous stream.
 	 */
 	public static void sendMessage(Stream<Player> players, String message) {
-		players.peek(p -> sendMessage(p, message));
+		players.forEach(p -> sendMessage(p, message));
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class MessageManager {
 	 * @param messages An array that contains all messages to send to all players present in the previous stream.
 	 */
 	public static void sendMessage(Stream<Player> players, String... messages) {
-		players.peek(p -> sendMessage(p, messages));
+		players.forEach(p -> sendMessage(p, messages));
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class MessageManager {
 	 * @param messages An array that contains all messages to send to the player.
 	 */
 	public static void sendMessage(DisplayOption option, Stream<Player> players, TitleMessage... messages) {
-		players.peek(player -> sendMessage(option, player, messages));
+		players.forEach(player -> sendMessage(option, player, messages));
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class MessageManager {
 	 * @param messages A list that contains all messages to send to the player.
 	 */
 	public static void sendMessage(DisplayOption option, Stream<Player> players, List<TitleMessage> messages) {
-		players.peek(player -> sendMessage(option, player, messages));
+		players.forEach(player -> sendMessage(option, player, messages));
 	}
 
 	public enum DisplayOption {

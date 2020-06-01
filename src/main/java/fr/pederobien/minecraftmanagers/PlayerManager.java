@@ -73,7 +73,7 @@ public class PlayerManager {
 	 * @param players A stream that contains all players which the inventory should be cleared.
 	 */
 	public static void removeInventoryOfPlayers(Stream<Player> players) {
-		players.peek(p -> removeInventoryOfPlayer(p));
+		players.forEach(p -> removeInventoryOfPlayer(p));
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class PlayerManager {
 	 * @param level   The new experience level of each player in the stream.
 	 */
 	public static void setExpLevelOfPlayers(Stream<Player> players, int level) {
-		players.peek(p -> setExpLevelOfPlayer(p, level));
+		players.forEach(p -> setExpLevelOfPlayer(p, level));
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class PlayerManager {
 	 * @see #setFoodLevelOfPlayer(Player, int)
 	 */
 	public static void setFoodLevelOfPlayers(Stream<Player> players, int level) {
-		players.peek(p -> setFoodLevelOfPlayer(p, level));
+		players.forEach(p -> setFoodLevelOfPlayer(p, level));
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class PlayerManager {
 	 * @see #setFoodLevelOfPlayer(Player, int)
 	 */
 	public static void setMaxHealthOfPlayers(Stream<Player> players, double level) {
-		players.peek(p -> setMaxHealthOfPlayer(p, level));
+		players.forEach(p -> setMaxHealthOfPlayer(p, level));
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class PlayerManager {
 	 * @param level   The health of each player after the call to this method.
 	 */
 	public static void setHealthOfPlayers(Stream<Player> players, double level) {
-		players.peek(p -> setHealthOfPlayer(p, level));
+		players.forEach(p -> setHealthOfPlayer(p, level));
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class PlayerManager {
 	 * @param mode    The new game mode of each player in the specified stream.
 	 */
 	public static void setGameModeOfPlayers(Stream<Player> players, GameMode mode) {
-		players.peek(p -> setGameModeOfPlayer(p, mode));
+		players.forEach(p -> setGameModeOfPlayer(p, mode));
 	}
 
 	/**
@@ -347,7 +347,7 @@ public class PlayerManager {
 	 * @see #teleporte(Player, Location)
 	 */
 	public static void teleportePlayers(Stream<Player> players, Location location) {
-		players.peek(p -> teleporte(p, location));
+		players.forEach(p -> teleporte(p, location));
 	}
 
 	/**
@@ -416,7 +416,7 @@ public class PlayerManager {
 	 * @param players A stream that contains all player to drop their inventory.
 	 */
 	public static void dropPlayersInventoryItemNaturally(Stream<Player> players) {
-		players.peek(p -> dropPlayerInventoryItemNaturally(p));
+		players.forEach(p -> dropPlayerInventoryItemNaturally(p));
 	}
 
 	/**
@@ -443,6 +443,6 @@ public class PlayerManager {
 	 * @see #killPlayer(Player)
 	 */
 	public static void killPlayers(Stream<Player> players) {
-		players.peek(p -> killPlayer(p));
+		players.forEach(p -> killPlayer(p));
 	}
 }

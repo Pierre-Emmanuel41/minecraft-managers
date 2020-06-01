@@ -1,5 +1,7 @@
 package fr.pederobien.minecraftmanagers;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.bukkit.GameMode;
@@ -117,6 +119,19 @@ public class PotionManager {
 	}
 
 	/**
+	 * Adds each effect in the given array <code>effects</code>to the specified player.
+	 * <p>
+	 * Only one potion effect can be present for a given {@link PotionEffectType}.
+	 *
+	 * @param player  The player that receive the effect.
+	 * @param effects An array that contains PotionEffect to be added.
+	 */
+	public static void giveEffects(Player player, PotionEffect... effects) {
+		for (PotionEffect effect : effects)
+			player.addPotionEffect(effect, true);
+	}
+
+	/**
 	 * Adds all effect present in the stream <code>effects</code> to the given player.
 	 * 
 	 * @param player  The player to add effects.
@@ -125,7 +140,7 @@ public class PotionManager {
 	 * @see #giveEffect(Player, PotionEffect)
 	 */
 	public static void giveEffects(Player player, Stream<PotionEffect> effects) {
-		effects.peek(e -> giveEffect(player, e));
+		effects.forEach(e -> giveEffect(player, e));
 	}
 
 	/**
@@ -164,7 +179,7 @@ public class PotionManager {
 	 * @see #giveEffect(Player, PotionEffect)
 	 */
 	public static void giveEffect(Stream<Player> players, PotionEffect effect) {
-		players.peek(p -> giveEffect(p, effect));
+		players.forEach(p -> giveEffect(p, effect));
 	}
 
 	/**
@@ -176,7 +191,11 @@ public class PotionManager {
 	 * @see #giveEffect(Player, PotionEffect)
 	 */
 	public static void giveEffects(Stream<Player> players, Stream<PotionEffect> effects) {
-		players.peek(p -> effects.peek(e -> giveEffect(p, e)));
+		List<Player> pl = players.collect(Collectors.toList());
+		List<PotionEffect> ef = effects.collect(Collectors.toList());
+		for (Player p : pl)
+			for (PotionEffect e : ef)
+				giveEffect(p, e);
 	}
 
 	/**
@@ -224,7 +243,7 @@ public class PotionManager {
 	 * @see #removeEffect(Player, PotionEffectType)
 	 */
 	public static void removeEffect(Player player, Stream<PotionEffectType> types) {
-		types.peek(t -> removeEffect(player, t));
+		types.forEach(t -> removeEffect(player, t));
 	}
 
 	/**
@@ -248,7 +267,7 @@ public class PotionManager {
 	 * @see #removeEffect(Player, PotionEffectType)
 	 */
 	public static void removeEffect(Stream<Player> players, PotionEffectType type) {
-		players.peek(p -> removeEffect(p, type));
+		players.forEach(p -> removeEffect(p, type));
 	}
 
 	/**
@@ -261,7 +280,11 @@ public class PotionManager {
 	 * @see #removeEffect(Player, PotionEffectType)
 	 */
 	public static void removeEffects(Stream<Player> players, Stream<PotionEffectType> types) {
-		players.peek(p -> types.peek(t -> removeEffect(p, t)));
+		List<Player> pl = players.collect(Collectors.toList());
+		List<PotionEffectType> ty = types.collect(Collectors.toList());
+		for (Player p : pl)
+			for (PotionEffectType t : ty)
+				removeEffect(p, t);
 	}
 
 	/**
@@ -325,7 +348,7 @@ public class PotionManager {
 	 * @see #removeAllEffects(Player)
 	 */
 	public static void removeAllEffects(Stream<Player> players) {
-		players.peek(p -> removeAllEffects(p));
+		players.forEach(p -> removeAllEffects(p));
 	}
 
 	/**
