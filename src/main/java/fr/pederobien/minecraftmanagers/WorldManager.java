@@ -713,14 +713,15 @@ public class WorldManager {
 	/**
 	 * Define two random coordinates x and z in range [-bound/2 + 1 ; bound/2 - 1].
 	 * 
-	 * @param world The world which the location is associated with.
-	 * @param bound The upper bound used for {@link Random}. Must be positive.
+	 * @param world  The world which the location is associated with.
+	 * @param center The center used to be sure the random location is inside the area represented by the center and the bound.
+	 * @param bound  The upper bound used for {@link Random}. Must be positive.
 	 * 
 	 * @return A random location associated to the given world.
 	 */
-	public static Location getRandomlyLocation(World world, int bound) {
-		int minX = -bound / 2 + 1, minZ = minX;
-		int maxX = bound / 2 - 1, maxZ = maxX;
+	public static Location getRandomlyLocation(World world, Block center, int bound) {
+		int minX = center.getX() - bound / 2 + 1, minZ = minX;
+		int maxX = center.getZ() + bound / 2 - 1, maxZ = maxX;
 		int randomX = 0, randomZ = 0;
 		Random rand = new Random();
 
