@@ -711,7 +711,11 @@ public class WorldManager {
 	}
 
 	/**
-	 * Define two random coordinates x and z in range [-bound/2 + 1 ; bound/2 - 1].
+	 * Define two random coordinates x and z in range </br>
+	 * <code>minX = center.getX() - bound / 2 + 1;</code></br>
+	 * <code>minZ = minX - center.getX() + center.getZ();</code></br>
+	 * <code>maxX = bound / 2 - 1 + center.getX();</code></br>
+	 * <code>maxZ = maxX - center.getX() + center.getZ();</code></br>
 	 * 
 	 * @param world  The world which the location is associated with.
 	 * @param center The center used to be sure the random location is inside the area represented by the center and the bound.
@@ -720,8 +724,10 @@ public class WorldManager {
 	 * @return A random location associated to the given world.
 	 */
 	public static Location getRandomlyLocation(World world, Block center, int bound) {
-		int minX = center.getX() - bound / 2 + 1, minZ = minX;
-		int maxX = center.getZ() + bound / 2 - 1, maxZ = maxX;
+		int minX = center.getX() - bound / 2 + 1;
+		int minZ = minX - center.getX() + center.getZ();
+		int maxX = bound / 2 - 1 + center.getX();
+		int maxZ = maxX - center.getX() + center.getZ();
 		int randomX = 0, randomZ = 0;
 		Random rand = new Random();
 
@@ -730,6 +736,60 @@ public class WorldManager {
 			randomZ = rand.nextInt(maxZ - minZ) + minZ;
 		} while (isBlockTypeOf(getBelowBlock(getHighestBlockYAt(world, randomX, randomZ)), Material.WATER, Material.LAVA));
 		return getHighestBlockYAt(world, randomX, randomZ).getLocation();
+	}
+
+	/**
+	 * Define two random coordinates x and z in range </br>
+	 * <code>minX = center.getX() - bound / 2 + 1;</code></br>
+	 * <code>minZ = minX - center.getX() + center.getZ();</code></br>
+	 * <code>maxX = bound / 2 - 1 + center.getX();</code></br>
+	 * <code>maxZ = maxX - center.getX() + center.getZ();</code></br>
+	 * 
+	 * @param center The center used to be sure the random location is inside the area represented by the center and the bound.
+	 * @param bound  The upper bound used for {@link Random}. Must be positive.
+	 * 
+	 * @return A random location in the overworld.
+	 * 
+	 * @see #getRandomlyLocation(World, Block, int)
+	 */
+	public static Location getRandomlyLocationInOverworld(Block center, int bound) {
+		return getRandomlyLocation(OVERWORLD, center, bound);
+	}
+
+	/**
+	 * Define two random coordinates x and z in range </br>
+	 * <code>minX = center.getX() - bound / 2 + 1;</code></br>
+	 * <code>minZ = minX - center.getX() + center.getZ();</code></br>
+	 * <code>maxX = bound / 2 - 1 + center.getX();</code></br>
+	 * <code>maxZ = maxX - center.getX() + center.getZ();</code></br>
+	 * 
+	 * @param center The center used to be sure the random location is inside the area represented by the center and the bound.
+	 * @param bound  The upper bound used for {@link Random}. Must be positive.
+	 * 
+	 * @return A random location in the nether.
+	 * 
+	 * @see #getRandomlyLocation(World, Block, int)
+	 */
+	public static Location getRandomlyLocationInNether(Block center, int bound) {
+		return getRandomlyLocation(NETHER_WORLD, center, bound);
+	}
+
+	/**
+	 * Define two random coordinates x and z in range </br>
+	 * <code>minX = center.getX() - bound / 2 + 1;</code></br>
+	 * <code>minZ = minX - center.getX() + center.getZ();</code></br>
+	 * <code>maxX = bound / 2 - 1 + center.getX();</code></br>
+	 * <code>maxZ = maxX - center.getX() + center.getZ();</code></br>
+	 * 
+	 * @param center The center used to be sure the random location is inside the area represented by the center and the bound.
+	 * @param bound  The upper bound used for {@link Random}. Must be positive.
+	 * 
+	 * @return A random location in the ender.
+	 * 
+	 * @see #getRandomlyLocation(World, Block, int)
+	 */
+	public static Location getRandomlyLocationInEnd(Block center, int bound) {
+		return getRandomlyLocation(END_WORLD, center, bound);
 	}
 
 	/**
