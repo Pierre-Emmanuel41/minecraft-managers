@@ -217,7 +217,8 @@ public class TeamManager {
 	 * @return All players in the team of the given player without the specified player.
 	 */
 	public static Stream<Player> getColleagues(Player player) {
-		return getPlayers(getTeam(player).get()).filter(p -> !p.equals(player));
+		Optional<Team> optTeam = getTeam(player);
+		return optTeam.isPresent() ? getPlayers(optTeam.get()).filter(p -> !p.equals(player)) : Stream.of();
 	}
 
 	/**
@@ -230,7 +231,8 @@ public class TeamManager {
 	 * @return All players in the team of the given player without the specified player.
 	 */
 	public static Stream<Player> getColleagues(Player player, Predicate<Player> predicate) {
-		return getPlayers(getTeam(player).get()).filter(p -> !p.equals(player)).filter(predicate);
+		Optional<Team> optTeam = getTeam(player);
+		return optTeam.isPresent() ? getPlayers(optTeam.get()).filter(p -> !p.equals(player)).filter(predicate) : Stream.of();
 	}
 
 	/**
