@@ -618,7 +618,7 @@ public class WorldManager {
 	/**
 	 * Set a game rule associated to the given world.
 	 * 
-	 * @param          <T> the value type of the GameRule.
+	 * @param <T>      the value type of the GameRule.
 	 * 
 	 * @param world    The world in which the game rule is applied.
 	 * @param gameRule the GameRule to update.
