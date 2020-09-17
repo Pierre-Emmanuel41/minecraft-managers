@@ -485,6 +485,24 @@ public class TeamManager {
 		}
 	}
 
+	/**
+	 * Mix the original list randomly. The original list is not modify.
+	 * 
+	 * @param <T>      The type of element in the list.
+	 * @param original The list to mix.
+	 * @return The randomly mixed list.
+	 */
+	public static <T> List<T> mix(List<T> original) {
+		List<T> randoms = new ArrayList<T>();
+		int size = original.size();
+		for (int i = 0; i < size; i++) {
+			T random = original.get(RANDOM.nextInt(original.size()));
+			randoms.add(random);
+			original.remove(random);
+		}
+		return randoms;
+	}
+
 	private static void checkEnoughPlayers(int maxPlayerInTeam, int nbPlayer) {
 		if (nbPlayer <= maxPlayerInTeam)
 			throw new UnsupportedOperationException("There is not enough player");
