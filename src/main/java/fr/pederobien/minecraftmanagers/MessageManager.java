@@ -5,7 +5,6 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -154,10 +153,11 @@ public class MessageManager {
 	}
 
 	public static class TitleMessage {
-		private String message, color;
+		private String message;
 		private boolean isBold, isItalic;
+		private EColor color;
 
-		private TitleMessage(String message, boolean isBold, boolean isItalic, String color) {
+		private TitleMessage(String message, boolean isBold, boolean isItalic, EColor color) {
 			this.message = message;
 			this.isBold = isBold;
 			this.isItalic = isItalic;
@@ -165,24 +165,21 @@ public class MessageManager {
 		}
 
 		/**
-		 * Create message to send to a player and with message characteristics. The value of parameter colour is not the char associated
-		 * to the {@link ChatColor} but the "human reading" name such as : red, purple, green, dark_blue...
+		 * Create message to send to a player and with message characteristics.
 		 * 
 		 * @param message The message to send to the player.
 		 * @param bold    If true the message should be in bold.
 		 * @param italic  If true the message should be in italic.
-		 * @param color   If the colour is not null and the colour name is correct, then the message is displayed with the given colour.
+		 * @param color   The message color
 		 * 
 		 * @return The created message based on the given parameters.
 		 */
-		public static TitleMessage of(String message, boolean isBold, boolean isItalic, String color) {
+		public static TitleMessage of(String message, boolean isBold, boolean isItalic, EColor color) {
 			return new TitleMessage(message, isBold, isItalic, color);
 		}
 
 		/**
-		 * Create message to send to a player and with message characteristics. The value of parameter colour is not the char associated
-		 * to the {@link ChatColor} but the "human reading" name such as : red, purple, green, dark_blue... This message is not coloured
-		 * (white).
+		 * Create message to send to a player and with message characteristics.
 		 * 
 		 * @param message The message to send to the player.
 		 * @param bold    If true the message should be in bold.
@@ -191,21 +188,23 @@ public class MessageManager {
 		 * @return The created message based on the given parameters.
 		 */
 		public static TitleMessage of(String message, boolean isBold, boolean isItalic) {
-			return of(message, isBold, isItalic, null);
+			return of(message, isBold, isItalic, EColor.RESET);
 		}
 
 		/**
-		 * Create message to send to a player and with message characteristics. The value of parameter colour is not the char associated
-		 * to the {@link ChatColor} but the "human reading" name such as : red, purple, green, dark_blue... This message is neither in
-		 * italic nor in bold.
+		 * Create message to send to a player and with message characteristics
 		 * 
 		 * @param message The message to send to the player.
-		 * @param color   If the colour is not null and the colour name is correct, then the message is displayed with the given colour.
+		 * @param color   The message color.
 		 * 
 		 * @return The created message based on the given parameters.
 		 */
-		public static TitleMessage of(String message, String color) {
+		public static TitleMessage of(String message, EColor color) {
 			return of(message, false, false, color);
+		}
+
+		public static TitleMessage of(String message) {
+			return of(message, EColor.WHITE);
 		}
 
 		@Override
@@ -237,7 +236,7 @@ public class MessageManager {
 		/**
 		 * @return The color of this message.
 		 */
-		public String getColor() {
+		public EColor getColor() {
 			return color;
 		}
 
