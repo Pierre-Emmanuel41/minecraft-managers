@@ -21,8 +21,8 @@ public enum EColor {
 
 	static {
 		for (EColor color : values()) {
-			mapColorName.put(color.getName(), color);
-			colorsName.add(color.getName());
+			mapColorName.put(color.toString(), color);
+			colorsName.add(color.toString());
 		}
 	}
 
@@ -55,6 +55,16 @@ public enum EColor {
 		return colorsName;
 	}
 
+	private EColor(ChatColor color, String name) {
+		this.color = color;
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	/**
 	 * Get a new String based on the given string. The initial string is not modified.
 	 * 
@@ -66,23 +76,11 @@ public enum EColor {
 		return new String(this.getChatColor() + string + ChatColor.RESET);
 	}
 
-	private EColor(ChatColor color, String name) {
-		this.color = color;
-		this.name = name;
-	}
-
 	/**
 	 * @return The minecraft ChatColor associated to this EColor.
 	 */
 	public ChatColor getChatColor() {
 		return color;
-	}
-
-	/**
-	 * @return The name of this EColor.
-	 */
-	public String getName() {
-		return name;
 	}
 
 	/**
