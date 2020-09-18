@@ -5,6 +5,7 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -110,6 +111,12 @@ public class MessageManager {
 	 * @param messages A list that contains all messages to send to the player.
 	 */
 	public static void sendMessage(DisplayOption option, Player player, List<TitleMessage> messages) {
+		if (option.equals(DisplayOption.CONSOLE)) {
+			for (TitleMessage message : messages)
+				sendMessage(player, message.asString());
+			return;
+		}
+
 		StringJoiner cmd = new StringJoiner(" ");
 		cmd.add("title").add(player.getName()).add(option.toString());
 		if (messages.size() > 1) {
@@ -138,7 +145,7 @@ public class MessageManager {
 	}
 
 	public enum DisplayOption {
-		TITLE("title"), SUB_TITLE("subtitle"), ACTION_BAR("actionbar");
+		TITLE("title"), SUB_TITLE("subtitle"), ACTION_BAR("actionbar"), CONSOLE("console");
 
 		private String name;
 
@@ -252,6 +259,18 @@ public class MessageManager {
 		 */
 		public boolean isItalic() {
 			return isItalic;
+		}
+
+		/**
+		 * @return The message after applying modifiers (bold, italic, color)
+		 */
+		public String asString() {
+			String asString = "";
+			if (isBold)
+				asString += "" + ChatColor.BOLD;
+			if (isItalic)
+				asString += "" + ChatColor.ITALIC;
+			return color.getInColor(asString += message);
 		}
 
 		private void join(StringJoiner joiner, boolean condition, String key, Object value) {
