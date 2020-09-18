@@ -1,5 +1,6 @@
 package fr.pederobien.minecraftmanagers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
@@ -75,19 +76,7 @@ public class MessageManager {
 	 * @param messages An array that contains all messages to send to the player.
 	 */
 	public static void sendMessage(DisplayOption option, Player player, TitleMessage... messages) {
-		StringJoiner cmd = new StringJoiner(" ");
-		cmd.add("title").add(player.getName()).add(option.toString());
-		if (messages.length > 1) {
-			StringJoiner msgJoiner = new StringJoiner(", ", "[", "]");
-			msgJoiner.add("\"\"");
-			for (TitleMessage message : messages)
-				msgJoiner.add(message.toJson());
-			cmd.add(msgJoiner.toString());
-			BukkitManager.dispatchCommand(cmd.toString());
-		} else if (messages.length == 1) {
-			cmd.add(messages[0].toJson());
-			BukkitManager.dispatchCommand(cmd.toString());
-		}
+		sendMessage(option, player, Arrays.asList(messages));
 	}
 
 	/**
