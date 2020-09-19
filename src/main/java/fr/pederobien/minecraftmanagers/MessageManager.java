@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameRule;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -106,6 +107,12 @@ public class MessageManager {
 			return;
 		}
 
+		// saving old value of game rule sendCommandFeedback
+		boolean sendCommandFeedBack = WorldManager.OVERWORLD.getGameRuleValue(GameRule.SEND_COMMAND_FEEDBACK);
+
+		// To avoid feedback of command /title
+		if (sendCommandFeedBack)
+			WorldManager.OVERWORLD.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, false);
 		StringJoiner cmd = new StringJoiner(" ");
 		cmd.add("title").add(player.getName()).add(option.toString());
 		if (messages.size() > 1) {
@@ -119,6 +126,9 @@ public class MessageManager {
 			cmd.add(messages.get(0).toJson());
 			BukkitManager.dispatchCommand(cmd.toString());
 		}
+
+		if (sendCommandFeedBack)
+			WorldManager.OVERWORLD.setGameRule(GameRule.SEND_COMMAND_FEEDBACK, true);
 	}
 
 	/**
