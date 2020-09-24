@@ -301,20 +301,6 @@ public class TeamManager {
 	}
 
 	/**
-	 * Get a random player from the specified stream. First the stream is collected, this means that this method is a terminal
-	 * operation for the given stream. Then through a random object, get a random player.
-	 * 
-	 * @param players A stream used to get a random player.
-	 * @return A player randomly choosen.
-	 */
-	public static Optional<Player> getRandom(List<Player> players) {
-		Random rand = new Random();
-		if (players.size() == 0)
-			return Optional.empty();
-		return Optional.of(players.get(rand.nextInt(players.size())));
-	}
-
-	/**
 	 * Get a stream that contains player from the given team with the specified game mode.
 	 * 
 	 * @param team The team used to get its players.
@@ -501,6 +487,37 @@ public class TeamManager {
 			original.remove(random);
 		}
 		return randoms;
+	}
+
+	/**
+	 * Get a random element from the specified list.
+	 * 
+	 * @param list A list used to get a random element.
+	 * 
+	 * @return An element randomly chosen.
+	 */
+	public static <T> Optional<T> getRandom(List<T> list) {
+		if (list.size() == 0)
+			return Optional.empty();
+		Random rand = new Random();
+		return Optional.of(list.get(rand.nextInt(list.size())));
+	}
+
+	/**
+	 * Get a random element from the specified list. The given list is filtered using the given predicate.
+	 * 
+	 * @param list      A stream used to get a random element.
+	 * @param predicate The filter applied on each element present in the specified list.
+	 * 
+	 * @return An element randomly chosen.
+	 */
+	public static <T> Optional<T> getRandom(List<T> list, Predicate<T> predicate) {
+		if (list.size() == 0)
+			return Optional.empty();
+		Random rand = new Random();
+		List<T> copy = new ArrayList<>(list);
+		copy.removeIf(predicate);
+		return Optional.of(copy.get(rand.nextInt(copy.size())));
 	}
 
 	private static void checkEnoughPlayers(int maxPlayerInTeam, int nbPlayer) {
