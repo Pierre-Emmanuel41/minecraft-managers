@@ -5,7 +5,7 @@
 	<groupId>fr.pederobien</groupId>
 	<artifactId>minecraft-managers</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0_MC_1.13.2</version>
+	<version>3.0_MC_1.13.2</version>
 	<name>minecraft-managers</name>
 	<url>http://maven.apache.org</url>
 	<properties>
