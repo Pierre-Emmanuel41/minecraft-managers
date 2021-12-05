@@ -1,36 +1,25 @@
-# minecraft-managers
+# Presentation
 
 This is a simple project that contains static classes in order to simplify the use of Minecraft API.
 
-# Register as maven dependency
+# Download
 
-It is easy to register this project as dependency for your own project. To do so, you need to download this project.
-First, you need to download this project on your machine.
-
-The easiest way to do so is to use the following git command line 
+First you need to download this project on your computer. To do so, you can use the following command line :
 
 ```git
-git clone https://github.com/Pierre-Emmanuel41/minecraft-managers.git
+git clone https://github.com/Pierre-Emmanuel41/minecraft-managers.git --recursive
 ```
 
-Then, you need to run the following maven command line : 
-
-```maven
-mvn clean package install
-
-```
-
-Finally, in the pom.xml of your project, you have to add the following lines :
+and then double click on the deploy.bat file. This will deploy this project and all its dependencies on your computer. Which means it generates the folder associated to this project and its dependencies in your .m2 folder. Once this has been done, you can add the project as maven dependency on your maven project :
 
 ```xml
 <dependency>
 	<groupId>fr.pederobien</groupId>
 	<artifactId>minecraft-managers</artifactId>
-	<version>1.0</version>
+	<version>3.0_MC_1.13.2-SNAPSHOT</version>
 </dependency>
 ```
-You can now use features provided by this api in you project.
 
 # Classes
 
-This project contains many managers such as BukkitManager, PlayerManager or TeamManager. There is nothing special to do before using because they are static.
+This project contains many managers such as BukkitManager, PlayerManager or TeamManager.

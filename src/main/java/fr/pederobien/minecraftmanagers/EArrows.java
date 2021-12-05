@@ -3,6 +3,8 @@ package fr.pederobien.minecraftmanagers;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.pederobien.utils.Range;
+
 public enum EArrows {
 	/**
 	 * Default unicode : \u2191
@@ -44,7 +46,7 @@ public enum EArrows {
 	 */
 	TOP_LEFT("\u2b09");
 
-	private static Map<Range, EArrows> map;
+	private static Map<Range<Double>, EArrows> map;
 	private String unicode;
 
 	private EArrows(String unicode) {
@@ -59,8 +61,8 @@ public enum EArrows {
 	 * @return The arrow associated to the given yaw.
 	 */
 	public static EArrows getArrow(double yaw) {
-		for (Map.Entry<Range, EArrows> entry : map.entrySet())
-			if (entry.getKey().isInRange(yaw))
+		for (Map.Entry<Range<Double>, EArrows> entry : map.entrySet())
+			if (entry.getKey().contains(yaw))
 				return entry.getValue();
 
 		// Should never returns null
@@ -88,35 +90,18 @@ public enum EArrows {
 		this.unicode = unicode;
 	}
 
-	private static class Range {
-		private double min, max;
-
-		private Range(double min, double max) {
-			this.min = min;
-			this.max = max;
-		}
-
-		public static Range of(double min, double max) {
-			return new Range(min, max);
-		}
-
-		public boolean isInRange(double value) {
-			return min <= value && value < max;
-		}
-	}
-
 	static {
-		map = new HashMap<Range, EArrows>();
+		map = new HashMap<Range<Double>, EArrows>();
 		map.put(Range.of(-22.5, 22.5), EArrows.TOP);
 
 		// From 22.5° to 180°
 		map.put(Range.of(22.5, 67.5), EArrows.TOP_LEFT);
 		map.put(Range.of(67.5, 112.5), EArrows.LEFT);
 		map.put(Range.of(112.5, 157.5), EArrows.BOTTOM_LEFT);
-		map.put(Range.of(157.5, 181), EArrows.BOTTOM);
+		map.put(Range.of(157.5, 181.0), EArrows.BOTTOM);
 
 		// From -180° to -22.5°
-		map.put(Range.of(-181, -157.5), EArrows.BOTTOM);
+		map.put(Range.of(-181.0, -157.5), EArrows.BOTTOM);
 		map.put(Range.of(-157.5, -112.5), EArrows.BOTTOM_RIGHT);
 		map.put(Range.of(-112.5, -67.5), EArrows.RIGHT);
 		map.put(Range.of(-67.5, -22.5), EArrows.TOP_RIGHT);
