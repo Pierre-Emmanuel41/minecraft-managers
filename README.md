@@ -15,7 +15,7 @@ and then double click on the deploy.bat file. This will deploy this project and 
 ```xml
 <dependency>
 	<groupId>fr.pederobien</groupId>
-	<artifactId>minecraft-managers</artifactId>
+	<artifactId>minecraft.managers</artifactId>
 	<version>3.0_MC_1.13.2-SNAPSHOT</version>
 </dependency>
 ```

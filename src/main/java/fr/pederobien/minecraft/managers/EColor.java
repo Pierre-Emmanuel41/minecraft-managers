@@ -1,4 +1,4 @@
-package fr.pederobien.minecraftmanagers;
+package fr.pederobien.minecraft.managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;

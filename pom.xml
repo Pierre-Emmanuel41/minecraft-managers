@@ -6,7 +6,7 @@
 	<artifactId>minecraft-managers</artifactId>
 	<packaging>jar</packaging>
 	<version>3.0_MC_1.13.2-SNAPSHOT</version>
-	<name>minecraft-managers</name>
+	<name>minecraft.managers</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<author>Pierre-Emmanuel41</author>

@@ -1,4 +1,4 @@
-package fr.pederobien.minecraftmanagers;
+package fr.pederobien.minecraft.managers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
