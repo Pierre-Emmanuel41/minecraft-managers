@@ -71,6 +71,15 @@ public class BukkitManager {
 	}
 
 	/**
+	 * Gets a {@link ConsoleCommandSender} that may be used as an input source for this server.
+	 *
+	 * @return a console command sender
+	 */
+	public static ConsoleCommandSender getConsoleSender() {
+		return Bukkit.getConsoleSender();
+	}
+
+	/**
 	 * Dispatches a command on this server, and executes it if found.
 	 *
 	 * @param sender      the apparent sender of the command
@@ -91,7 +100,7 @@ public class BukkitManager {
 	 * @throws CommandException thrown when the executor for the given command fails with an unhandled exception
 	 */
 	public static void dispatchCommand(String command) {
-		dispatchCommand(Bukkit.getConsoleSender(), command);
+		dispatchCommand(getConsoleSender(), command);
 	}
 
 	/**
