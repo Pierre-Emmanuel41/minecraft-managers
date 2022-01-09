@@ -73,7 +73,19 @@ public enum EColor {
 	 * @return A new String equivalent to ChatColor + string + ChatColor.RESET.
 	 */
 	public String getInColor(String string) {
-		return new String(this.getChatColor() + string + ChatColor.RESET);
+		return getInColor(string, EColor.RESET);
+	}
+
+	/**
+	 * Get a new String based on the given string. The initial string is not modified.
+	 * 
+	 * @param string The used to be shown in this EColor.
+	 * @param next   The color after to used after.
+	 * 
+	 * @return A new String equivalent to ChatColor + string + ChatColor.RESET.
+	 */
+	public String getInColor(String string, EColor next) {
+		return new String(this.getChatColor() + string + next.getChatColor());
 	}
 
 	/**
