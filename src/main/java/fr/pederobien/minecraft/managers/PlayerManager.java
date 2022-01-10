@@ -43,7 +43,10 @@ public class PlayerManager {
 	 * @return a player if one was found, null otherwise
 	 */
 	public static Player getPlayer(String name) {
-		return BukkitManager.getPlayer(name);
+		for (Player player : BukkitManager.getOnlinePlayers())
+			if (player.getName().equals(name))
+				return player;
+		return null;
 	}
 
 	/**
