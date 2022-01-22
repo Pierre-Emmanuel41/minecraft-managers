@@ -5,7 +5,7 @@
 	<groupId>fr.pederobien.minecraft</groupId>
 	<artifactId>managers</artifactId>
 	<packaging>jar</packaging>
-	<version>3.0_MC_1.13.2-SNAPSHOT</version>
+	<version>3.0_MC_1.16.5-SNAPSHOT</version>
 	<name>managers</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.13-R0.1-SNAPSHOT</version>
+			<version>1.16.5-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

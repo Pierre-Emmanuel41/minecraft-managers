@@ -128,7 +128,7 @@ public class PotionManager {
 	 */
 	public static void giveEffects(Player player, PotionEffect... effects) {
 		for (PotionEffect effect : effects)
-			player.addPotionEffect(effect, true);
+			player.addPotionEffect(effect);
 	}
 
 	/**

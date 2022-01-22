@@ -68,16 +68,22 @@ public class WorldManager {
 		MOBS.add(EntityType.DROWNED);
 		MOBS.add(EntityType.ELDER_GUARDIAN);
 		MOBS.add(EntityType.ENDER_DRAGON);
+		MOBS.add(EntityType.ENDERMAN);
 		MOBS.add(EntityType.ENDERMITE);
 		MOBS.add(EntityType.EVOKER);
+		MOBS.add(EntityType.EVOKER_FANGS);
 		MOBS.add(EntityType.GHAST);
 		MOBS.add(EntityType.GIANT);
 		MOBS.add(EntityType.GUARDIAN);
+		MOBS.add(EntityType.HOGLIN);
 		MOBS.add(EntityType.HUSK);
 		MOBS.add(EntityType.ILLUSIONER);
 		MOBS.add(EntityType.MAGMA_CUBE);
 		MOBS.add(EntityType.PHANTOM);
-		MOBS.add(EntityType.PIG_ZOMBIE);
+		MOBS.add(EntityType.PIGLIN);
+		MOBS.add(EntityType.PIGLIN_BRUTE);
+		MOBS.add(EntityType.PILLAGER);
+		MOBS.add(EntityType.RAVAGER);
 		MOBS.add(EntityType.SHULKER);
 		MOBS.add(EntityType.SILVERFISH);
 		MOBS.add(EntityType.SKELETON);
@@ -85,13 +91,16 @@ public class WorldManager {
 		MOBS.add(EntityType.SLIME);
 		MOBS.add(EntityType.SPIDER);
 		MOBS.add(EntityType.STRAY);
+		MOBS.add(EntityType.STRIDER);
 		MOBS.add(EntityType.VEX);
 		MOBS.add(EntityType.VINDICATOR);
 		MOBS.add(EntityType.WITCH);
 		MOBS.add(EntityType.WITHER);
 		MOBS.add(EntityType.WITHER_SKELETON);
+		MOBS.add(EntityType.ZOGLIN);
 		MOBS.add(EntityType.ZOMBIE);
 		MOBS.add(EntityType.ZOMBIE_VILLAGER);
+		MOBS.add(EntityType.ZOMBIFIED_PIGLIN);
 	}
 
 	/**
