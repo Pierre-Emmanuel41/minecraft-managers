@@ -23,6 +23,7 @@ public enum EColor {
 		for (EColor color : values()) {
 			mapColorName.put(color.toString(), color);
 			colorsName.add(color.toString());
+			mapColor.put(color.getChatColor(), color);
 		}
 	}
 
